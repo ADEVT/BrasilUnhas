@@ -1,30 +1,93 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/principal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="${packageName}.${activityClass}" >
-
-    <LinearLayout
-        android:id="@+id/layout_grid"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical" >
-
-        <GridView
-            android:id="@+id/gridView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:numColumns="3" >
-        </GridView>
-    </LinearLayout>
-
+    android:layout_height="match_parent" >
+    
+    
+	<!-- layout do banner -->
     <LinearLayout
         android:id="@+id/banner"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@id/layout_grid" >
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
     </LinearLayout>
+    <!-- fim do layout do banner -->
+
+    <!-- layout do menu principal -->
+    <LinearLayout
+        android:id="@+id/layout_principal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/banner"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >       
+
+        <GridView
+            android:id="@+id/gvPrincipal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#FFFFFF"
+            android:columnWidth="90dp"
+            android:gravity="center"
+            android:horizontalSpacing="20dp"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="20dp" >
+        </GridView>
+    </LinearLayout>
+     <!-- fim do layout do menu principal -->
+     
+     <!-- layout do menu categorias -->
+    <LinearLayout
+        android:id="@+id/layout_categorias"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/banner"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone" >       
+
+        <GridView
+            android:id="@+id/gvCategorias"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#FFFFFF"
+            android:columnWidth="90dp"
+            android:gravity="center"
+            android:horizontalSpacing="20dp"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="20dp" >
+        </GridView>
+    </LinearLayout>
+     <!-- fim do layout do menu categorias -->
+    
+     <!-- layout do menu subcategorias -->
+     <LinearLayout
+        android:id="@+id/layout_subcategorias"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/banner"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone" >       
+
+
+        <GridView
+            android:id="@+id/gvSubcategorias"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#FFFFFF"
+            android:columnWidth="90dp"
+            android:gravity="center"
+            android:horizontalSpacing="20dp"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="20dp" >
+        </GridView>
+    </LinearLayout>
+     <!-- fim do layout do menu subcategoriasF -->
 
 </RelativeLayout>
