@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -28,6 +31,10 @@ public class Principal extends Activity {
 	LinearLayout layoutPrincipal;
 	LinearLayout layoutCategorias;
 	LinearLayout layoutSubcategorias;
+	LinearLayout layoutMiniaturas;
+	RelativeLayout layoutViewPager;
+	
+	Integer[] imagensGridView = { R.drawable.categorias, R.drawable.seta, R.drawable.categorias, R.drawable.seta };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +58,14 @@ public class Principal extends Activity {
 		layoutPrincipal = (LinearLayout) findViewById(R.id.layout_principal);
 		layoutCategorias = (LinearLayout) findViewById(R.id.layout_categorias);
 		layoutSubcategorias = (LinearLayout) findViewById(R.id.layout_subcategorias);
+		layoutMiniaturas = (LinearLayout) findViewById(R.id.layout_miniaturas);
+		layoutViewPager = (RelativeLayout) findViewById(R.id.layout_viewPager);
 
 		final GridView menuPrincipal = (GridView) findViewById(R.id.gvPrincipal);
 		final GridView categorias = (GridView) findViewById(R.id.gvCategorias);
 		final GridView subcategorias = (GridView) findViewById(R.id.gvSubcategorias);
+		final GridView miniaturas = (GridView) findViewById(R.id.gvMiniaturas);
+		final ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
 
 		Integer[] imagens = { R.drawable.categorias };
 		menuPrincipal.setAdapter(new AdaptadorMenu(Principal.this, imagens));
@@ -65,6 +76,7 @@ public class Principal extends Activity {
 				categorias.setAdapter(new AdaptadorMenu(Principal.this, imagens2));
 				layoutPrincipal.setVisibility(View.GONE);
 				layoutCategorias.setVisibility(View.VISIBLE);
+				layoutSubcategorias.setVisibility(View.GONE);
 				telaAlvo = "categorias";
 			}
 		});
@@ -83,12 +95,42 @@ public class Principal extends Activity {
 					break;
 				}
 				subcategorias.setAdapter(new AdaptadorMenu(Principal.this, imagens.toArray(new Integer[imagens.size()])));
+
 				layoutPrincipal.setVisibility(View.GONE);
 				layoutCategorias.setVisibility(View.GONE);
 				layoutSubcategorias.setVisibility(View.VISIBLE);
 				telaAlvo = "subcategoria";
 			}
 
+		});
+		subcategorias.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				
+				miniaturas.setAdapter(new AdaptadorMenu(Principal.this, imagensGridView));
+				layoutPrincipal.setVisibility(View.GONE);
+				layoutCategorias.setVisibility(View.GONE);
+				layoutSubcategorias.setVisibility(View.GONE);
+				layoutMiniaturas.setVisibility(View.VISIBLE);
+				telaAlvo = "miniaturas";
+			}
+
+		});
+
+		miniaturas.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				viewPager.setAdapter(new AdaptadorImagem_ViewPager(Principal.this, imagensGridView));
+				layoutPrincipal.setVisibility(View.GONE);
+				layoutCategorias.setVisibility(View.GONE);
+				layoutSubcategorias.setVisibility(View.GONE);
+				layoutMiniaturas.setVisibility(View.GONE);
+				layoutViewPager.setVisibility(View.VISIBLE);
+				telaAlvo = "viewpager";
+
+			}
 		});
 
 	}
@@ -104,14 +146,34 @@ public class Principal extends Activity {
 				layoutPrincipal.setVisibility(View.VISIBLE);
 				layoutCategorias.setVisibility(View.GONE);
 				layoutSubcategorias.setVisibility(View.GONE);
+				layoutMiniaturas.setVisibility(View.GONE);
+				layoutViewPager.setVisibility(View.GONE);
 				telaAlvo = "principal";
 				break;
 			case "subcategoria":
 				layoutPrincipal.setVisibility(View.GONE);
 				layoutSubcategorias.setVisibility(View.GONE);
 				layoutCategorias.setVisibility(View.VISIBLE);
+				layoutMiniaturas.setVisibility(View.GONE);
+				layoutViewPager.setVisibility(View.GONE);
 				telaAlvo = "categorias";
-				break;				
+				break;
+			case "miniaturas":
+				layoutPrincipal.setVisibility(View.GONE);
+				layoutSubcategorias.setVisibility(View.GONE);
+				layoutCategorias.setVisibility(View.VISIBLE);
+				layoutMiniaturas.setVisibility(View.GONE);
+				layoutViewPager.setVisibility(View.GONE);
+				telaAlvo = "categorias";
+				break;
+			case "viewpager":
+				layoutPrincipal.setVisibility(View.GONE);
+				layoutSubcategorias.setVisibility(View.GONE);
+				layoutCategorias.setVisibility(View.GONE);
+				layoutMiniaturas.setVisibility(View.VISIBLE);
+				layoutViewPager.setVisibility(View.GONE);
+				telaAlvo = "miniaturas";
+				break;
 			}
 			return true;
 		}
@@ -180,5 +242,54 @@ public class Principal extends Activity {
 			return imagem;
 		}
 
+	}
+
+	public class AdaptadorImagem_ViewPager extends PagerAdapter {
+		private Context ctx;
+		private final Integer[] imagens;
+
+		public AdaptadorImagem_ViewPager(Context c, Integer[] imagens) {
+			this.ctx = c;
+			this.imagens = imagens;
+		}
+
+		@Override
+		public int getCount() {
+			return imagens.length;
+		}
+
+		@Override
+		public boolean isViewFromObject(View view, Object object) {
+			// Determina se a view informada é igual ao object retornado pelo
+			// instantiateItem
+			return view == ((MeuObjeto) object).view;
+		}
+
+		@Override
+		public Object instantiateItem(ViewGroup container, int position) {
+			ImageView img = new ImageView(ctx);
+			img.setImageResource(imagens[position]);
+			img.setAdjustViewBounds(true);
+
+			// Adiciona no layout ViewGroup
+			((ViewGroup) container).addView(img);
+
+			MeuObjeto obj = new MeuObjeto();
+			obj.view = img;
+			return obj;
+		}
+
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object obj) {
+			// Remove do layout
+			MeuObjeto meuObj = (MeuObjeto) obj;
+			((ViewPager) container).removeView(meuObj.view);
+		}
+
+		// Apenas para demosntrar que você pode retornar um Objeto qualquer que
+		// contém a view
+		class MeuObjeto {
+			View view;
+		}
 	}
 }

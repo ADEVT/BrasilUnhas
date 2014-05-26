@@ -2,9 +2,9 @@
     android:id="@+id/principal"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
-    
-	<!-- layout do banner -->
+
+    <!-- layout do banner -->
+
     <LinearLayout
         android:id="@+id/banner"
         android:layout_width="fill_parent"
@@ -15,14 +15,17 @@
     </LinearLayout>
     <!-- fim do layout do banner -->
 
+
     <!-- layout do menu principal -->
+
     <LinearLayout
         android:id="@+id/layout_principal"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@id/banner"
         android:gravity="center_horizontal"
-        android:orientation="vertical" >       
+        android:orientation="vertical"
+        android:visibility="gone" >
 
         <GridView
             android:id="@+id/gvPrincipal"
@@ -37,9 +40,11 @@
             android:verticalSpacing="20dp" >
         </GridView>
     </LinearLayout>
-     <!-- fim do layout do menu principal -->
-     
-     <!-- layout do menu categorias -->
+    <!-- fim do layout do menu principal -->
+
+
+    <!-- layout do menu categorias -->
+
     <LinearLayout
         android:id="@+id/layout_categorias"
         android:layout_width="fill_parent"
@@ -47,7 +52,7 @@
         android:layout_above="@id/banner"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:visibility="gone" >       
+        android:visibility="gone" >
 
         <GridView
             android:id="@+id/gvCategorias"
@@ -62,18 +67,19 @@
             android:verticalSpacing="20dp" >
         </GridView>
     </LinearLayout>
-     <!-- fim do layout do menu categorias -->
-    
-     <!-- layout do menu subcategorias -->
-     <LinearLayout
+    <!-- fim do layout do menu categorias -->
+
+
+    <!-- layout do menu subcategorias -->
+
+    <LinearLayout
         android:id="@+id/layout_subcategorias"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@id/banner"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:visibility="gone" >       
-
+        android:visibility="gone" >
 
         <GridView
             android:id="@+id/gvSubcategorias"
@@ -88,6 +94,81 @@
             android:verticalSpacing="20dp" >
         </GridView>
     </LinearLayout>
-     <!-- fim do layout do menu subcategoriasF -->
+    <!-- fim do layout do menu subcategorias -->
+
+
+    <!-- layout das miniaturas de imagens -->
+
+    <LinearLayout
+        android:id="@+id/layout_miniaturas"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/banner"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <GridView
+            android:id="@+id/gvMiniaturas"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#FFFFFF"
+            android:columnWidth="90dp"
+            android:gravity="center"
+            android:horizontalSpacing="20dp"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="20dp" >
+        </GridView>
+    </LinearLayout>
+
+    <!-- fim do layout das miniaturas de imagens -->
+
+
+    <!-- layout com viewpager para exibição das imagens -->
+
+    <!-- fim do layout com viewpager para exibição das imagens -->
+
+    <RelativeLayout
+        android:id="@+id/layout_viewPager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+        </android.support.v4.view.ViewPager>
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/viewPager"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="Salvar Imagem" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/viewPager"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Compartilhar" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/viewPager"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="Button" />
+    </RelativeLayout>
 
 </RelativeLayout>
