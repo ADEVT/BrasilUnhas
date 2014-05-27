@@ -25,7 +25,7 @@
         android:layout_above="@id/banner"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="visible" >
 
         <GridView
             android:id="@+id/gvPrincipal"
@@ -127,48 +127,47 @@
 
     <!-- layout com viewpager para exibição das imagens -->
 
-    <!-- fim do layout com viewpager para exibição das imagens -->
-
     <RelativeLayout
         android:id="@+id/layout_viewPager"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_above="@id/banner"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:visibility="visible" >
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/layout_botoes"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:layout_alignParentBottom="true" >
+
+            <Button
+                android:id="@+id/btnSalvar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salvar Imagem" />
+
+            <Button
+                android:id="@+id/btnCompartilhar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Compartilhar" />
+        </LinearLayout>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
-        </android.support.v4.view.ViewPager>
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/viewPager"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:text="Salvar Imagem" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/viewPager"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:text="Compartilhar" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/viewPager"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:text="Button" />
+            android:layout_above="@id/layout_botoes" >
+        </android.support.v4.view.ViewPager>
     </RelativeLayout>
+
+    <!-- fim do layout com viewpager para exibição das imagens -->
 
 </RelativeLayout>

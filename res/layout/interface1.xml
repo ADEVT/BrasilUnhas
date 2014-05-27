@@ -3,46 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-  <LinearLayout
-        android:id="@+id/layout_viewPager"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:visibility="visible" >
+<!--     <RelativeLayout -->
+<!--         android:id="@+id/layout_viewPager" -->
+<!--         android:layout_width="fill_parent" -->
+<!--         android:layout_height="fill_parent" -->
+<!--         android:gravity="center_horizontal" -->
+<!--         android:orientation="vertical" -->
+<!--         android:visibility="visible" > -->
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="fill_parent"
-            android:layout_height="176dp" >
-        </android.support.v4.view.ViewPager>
+<!--         <Button -->
+<!--             android:id="@+id/button1" -->
+<!--             android:layout_width="wrap_content" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:layout_alignParentBottom="true" -->
+<!--             android:layout_alignParentRight="true" -->
+<!--             android:layout_marginRight="44dp" -->
+<!--             android:text="Salvar" /> -->
 
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/viewPager"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:text="Salvar Imagem" />
+<!--         <Button -->
+<!--             android:id="@+id/button2" -->
+<!--             android:layout_width="wrap_content" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:layout_alignParentBottom="true" -->
+<!--             android:layout_marginRight="25dp" -->
+<!--             android:layout_toLeftOf="@+id/button1" -->
+<!--             android:text="Compartilhar" /> -->
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/viewPager"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:text="Compartilhar" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/viewPager"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:text="Button" />
-    </LinearLayout>
+<!--         <android.support.v4.view.ViewPager -->
+<!--             android:id="@+id/viewPager" -->
+<!--             android:layout_width="fill_parent" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:layout_above="@id/button2" -->
+<!--             android:layout_alignParentLeft="true" -->
+<!--             android:layout_alignParentTop="true" > -->
+<!--         </android.support.v4.view.ViewPager> -->
+<!--     </RelativeLayout> -->
 
 </RelativeLayout>

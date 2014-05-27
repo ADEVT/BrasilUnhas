@@ -7,18 +7,22 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -33,8 +37,11 @@ public class Principal extends Activity {
 	LinearLayout layoutSubcategorias;
 	LinearLayout layoutMiniaturas;
 	RelativeLayout layoutViewPager;
-	
-	Integer[] imagensGridView = { R.drawable.categorias, R.drawable.seta, R.drawable.categorias, R.drawable.seta };
+	Button btnCompartilhar, btnSalvar;
+
+	int posicaoPW = 0;
+
+	Integer[] imagensGridView = { R.drawable.foto1, R.drawable.foto3, R.drawable.foto4, R.drawable.foto1 };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +62,9 @@ public class Principal extends Activity {
 
 		adView.loadAd(adRequest);
 
+		btnCompartilhar = (Button) findViewById(R.id.btnCompartilhar);
+		btnSalvar = (Button) findViewById(R.id.btnSalvar);
+
 		layoutPrincipal = (LinearLayout) findViewById(R.id.layout_principal);
 		layoutCategorias = (LinearLayout) findViewById(R.id.layout_categorias);
 		layoutSubcategorias = (LinearLayout) findViewById(R.id.layout_subcategorias);
@@ -72,7 +82,9 @@ public class Principal extends Activity {
 
 		menuPrincipal.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int posicao, long id) {
-				Integer[] imagens2 = { R.drawable.seta, R.drawable.seta };
+				Integer[] imagens2 = { R.drawable.casamento, R.drawable.animais, R.drawable.desenhos, R.drawable.cores, R.drawable.passoapasso, R.drawable.jogos, R.drawable.tresdd, R.drawable.paises,
+						R.drawable.times, R.drawable.balada, R.drawable.copadomundo, R.drawable.ano_novo, R.drawable.carnaval, R.drawable.natal, R.drawable.francesinha, R.drawable.glitter,
+						R.drawable.decoradas, R.drawable.filhaunica };
 				categorias.setAdapter(new AdaptadorMenu(Principal.this, imagens2));
 				layoutPrincipal.setVisibility(View.GONE);
 				layoutCategorias.setVisibility(View.VISIBLE);
@@ -88,10 +100,12 @@ public class Principal extends Activity {
 				ArrayList<Integer> imagens = new ArrayList<>();
 
 				switch (posicao) {
-				case 0:
-					for (int i = 0; i < 10; i++) {
-						imagens.add(R.drawable.seta);
-					}
+				case 3:
+					imagens.add(R.drawable.azul);
+					imagens.add(R.drawable.verde);
+					imagens.add(R.drawable.vermelho);
+					imagens.add(R.drawable.roxo);
+
 					break;
 				}
 				subcategorias.setAdapter(new AdaptadorMenu(Principal.this, imagens.toArray(new Integer[imagens.size()])));
@@ -107,7 +121,7 @@ public class Principal extends Activity {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				
+
 				miniaturas.setAdapter(new AdaptadorMenu(Principal.this, imagensGridView));
 				layoutPrincipal.setVisibility(View.GONE);
 				layoutCategorias.setVisibility(View.GONE);
@@ -121,14 +135,43 @@ public class Principal extends Activity {
 		miniaturas.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int posicao, long arg3) {
 				viewPager.setAdapter(new AdaptadorImagem_ViewPager(Principal.this, imagensGridView));
+				viewPager.setCurrentItem(posicao);
+				posicaoPW = posicao;
+				viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+
+					@Override
+					public void onPageSelected(int posicao) {
+						posicaoPW = posicao;
+						Toast.makeText(Principal.this, "posição PW: " + posicaoPW, Toast.LENGTH_SHORT).show();
+					}
+
+					@Override
+					public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+					}
+
+					@Override
+					public void onPageScrollStateChanged(int arg0) {
+
+					}
+				});
 				layoutPrincipal.setVisibility(View.GONE);
 				layoutCategorias.setVisibility(View.GONE);
 				layoutSubcategorias.setVisibility(View.GONE);
 				layoutMiniaturas.setVisibility(View.GONE);
 				layoutViewPager.setVisibility(View.VISIBLE);
 				telaAlvo = "viewpager";
+			}
+		});
+
+		btnCompartilhar.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(Principal.this, "Compartilhando a imagem: " + posicaoPW, Toast.LENGTH_SHORT).show();
+				System.out.println("AQUI >>>>>>>>>>>>>>> "+posicaoPW);
 
 			}
 		});
