@@ -82,9 +82,7 @@ public class Principal extends Activity {
 
 		menuPrincipal.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int posicao, long id) {
-				Integer[] imagens2 = { R.drawable.casamento, R.drawable.animais, R.drawable.desenhos, R.drawable.cores, R.drawable.passoapasso, R.drawable.jogos, R.drawable.tresdd, R.drawable.paises,
-						R.drawable.times, R.drawable.balada, R.drawable.copadomundo, R.drawable.ano_novo, R.drawable.carnaval, R.drawable.natal, R.drawable.francesinha, R.drawable.glitter,
-						R.drawable.decoradas, R.drawable.filhaunica };
+				Integer[] imagens2 = { R.drawable.baixar, R.drawable.baixar, R.drawable.baixar, R.drawable.baixar };
 				categorias.setAdapter(new AdaptadorMenu(Principal.this, imagens2));
 				layoutPrincipal.setVisibility(View.GONE);
 				layoutCategorias.setVisibility(View.VISIBLE);
@@ -171,7 +169,7 @@ public class Principal extends Activity {
 			@Override
 			public void onClick(View v) {
 				Toast.makeText(Principal.this, "Compartilhando a imagem: " + posicaoPW, Toast.LENGTH_SHORT).show();
-				System.out.println("AQUI >>>>>>>>>>>>>>> "+posicaoPW);
+				System.out.println("AQUI >>>>>>>>>>>>>>> " + posicaoPW);
 
 			}
 		});
@@ -277,7 +275,7 @@ public class Principal extends Activity {
 				// imagem.setLayoutParams(new GridView.LayoutParams(120,120));
 				imagem.setAdjustViewBounds(true);
 				imagem.setScaleType(ImageView.ScaleType.CENTER_CROP);
-				imagem.setPadding(8, 8, 8, 8);
+				imagem.setPadding(2, 2, 2, 2);
 			} else {
 				imagem = (ImageView) convertView;
 			}

@@ -61,10 +61,10 @@
             android:background="#FFFFFF"
             android:columnWidth="90dp"
             android:gravity="center"
-            android:horizontalSpacing="20dp"
+            android:horizontalSpacing="0dp"
             android:numColumns="2"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="20dp" >
+            android:verticalSpacing="0dp" >
         </GridView>
     </LinearLayout>
     <!-- fim do layout do menu categorias -->
