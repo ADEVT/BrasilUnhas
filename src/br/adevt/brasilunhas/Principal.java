@@ -1,10 +1,27 @@
 package br.adevt.brasilunhas;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -31,6 +48,8 @@ import com.google.android.gms.ads.AdView;
 public class Principal extends Activity {
 	private AdView adView;
 	private final String AD_UNIT_ID = "ca-app-pub-4698331571681120/9045635697";
+	public final static String APP_PATH_SD_CARD = "/BrasilUnhas/";
+	public final static String APP_THUMBNAIL_PATH_SD_CARD = "imagens";
 	String telaAlvo = "principal";
 	LinearLayout layoutPrincipal;
 	LinearLayout layoutCategorias;
@@ -41,7 +60,7 @@ public class Principal extends Activity {
 
 	int posicaoPW = 0;
 
-	Integer[] imagensGridView = { R.drawable.foto1, R.drawable.foto3, R.drawable.foto4, R.drawable.foto1 };
+	ArrayList<Bitmap> imagensGridView = new ArrayList<>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,17 +96,35 @@ public class Principal extends Activity {
 		final GridView miniaturas = (GridView) findViewById(R.id.gvMiniaturas);
 		final ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
 
-		Integer[] imagens = { R.drawable.categorias };
+		Integer[] imagens = { R.drawable.categorias, R.drawable.facebookcompartilhar, R.drawable.sobre, R.drawable.app };
 		menuPrincipal.setAdapter(new AdaptadorMenu(Principal.this, imagens));
 
 		menuPrincipal.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int posicao, long id) {
-				Integer[] imagens2 = { R.drawable.baixar, R.drawable.baixar, R.drawable.baixar, R.drawable.baixar };
-				categorias.setAdapter(new AdaptadorMenu(Principal.this, imagens2));
-				layoutPrincipal.setVisibility(View.GONE);
-				layoutCategorias.setVisibility(View.VISIBLE);
-				layoutSubcategorias.setVisibility(View.GONE);
-				telaAlvo = "categorias";
+
+				switch (posicao) {
+				case 0:
+					Integer[] imagens2 = { R.drawable.cores, R.drawable.passoapasso, R.drawable.glitter, R.drawable.francesinha, R.drawable.casamento, R.drawable.animais, R.drawable.desenhos,
+							R.drawable.jogos, R.drawable.tresd, R.drawable.paises, R.drawable.times, R.drawable.balada, R.drawable.copadomundo, R.drawable.anonovo, R.drawable.carnaval,
+							R.drawable.natal, R.drawable.decoradas, R.drawable.filhaunica, R.drawable.flores, R.drawable.coracoes, R.drawable.nomes };
+					categorias.setAdapter(new AdaptadorMenu(Principal.this, imagens2));
+					layoutPrincipal.setVisibility(View.GONE);
+					layoutCategorias.setVisibility(View.VISIBLE);
+					layoutSubcategorias.setVisibility(View.GONE);
+					telaAlvo = "categorias";
+					break;
+				case 1:
+					Toast.makeText(Principal.this, "Compartilhando o APP", Toast.LENGTH_SHORT).show();
+					break;
+				case 2:
+					Toast.makeText(Principal.this, "Sobre o APP", Toast.LENGTH_SHORT).show();
+					break;
+				case 3:
+					Intent intent = new Intent(Intent.ACTION_VIEW);
+					intent.setData(Uri.parse("market://search?q=ADEVT"));
+					startActivity(intent);
+					break;
+				}
 			}
 		});
 
@@ -96,36 +133,108 @@ public class Principal extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int posicao, long arg3) {
 				ArrayList<Integer> imagens = new ArrayList<>();
+				String categoriaAux = "miniaturas";
+				String categoriaSelecionada = "";
 
 				switch (posicao) {
-				case 3:
+				case 0:
 					imagens.add(R.drawable.azul);
 					imagens.add(R.drawable.verde);
 					imagens.add(R.drawable.vermelho);
 					imagens.add(R.drawable.roxo);
+					categoriaAux = "subcategoria1";
 
 					break;
+				case 1:
+					categoriaSelecionada = "passoapasso";
+					break;
+				case 2:
+					categoriaSelecionada = "glitter";
+					break;
+				case 3:
+					categoriaSelecionada = "francesinha";
+					break;
+				case 4:
+					categoriaSelecionada = "casamento";
+					break;
+				case 5:
+					categoriaSelecionada = "animais";
+					break;
+				case 6:
+					categoriaSelecionada = "desenhos";
+					break;
+				case 7:
+					categoriaSelecionada = "jogos";
+					break;
+				case 8:
+					categoriaSelecionada = "3d";
+					break;
+				case 9:
+					categoriaSelecionada = "paises";
+					break;
+				case 10:
+					categoriaSelecionada = "times";
+					break;
+				case 11:
+					categoriaSelecionada = "balada";
+					break;
+				case 12:
+					categoriaSelecionada = "copadomundo";
+					break;
+				case 13:
+					categoriaSelecionada = "anonovo";
+					break;
+				case 14:
+					categoriaSelecionada = "carnaval";
+					break;
+				case 15:
+					categoriaSelecionada = "natal";
+					break;
+				case 16:
+					categoriaSelecionada = "decoradas";
+					break;
+				case 17:
+					categoriaSelecionada = "filhaunica";
+					break;
+				case 18:
+					categoriaSelecionada = "flores";
+					break;
+				case 19:
+					categoriaSelecionada = "coracao";
+					break;
+				case 20:
+					categoriaSelecionada = "nome";
+					break;
 				}
-				subcategorias.setAdapter(new AdaptadorMenu(Principal.this, imagens.toArray(new Integer[imagens.size()])));
-
+				// Toast.makeText(Principal.this, categoriaSelecionada,
+				// Toast.LENGTH_SHORT).show();
+				carregarImagens(categoriaSelecionada, miniaturas);
 				layoutPrincipal.setVisibility(View.GONE);
 				layoutCategorias.setVisibility(View.GONE);
-				layoutSubcategorias.setVisibility(View.VISIBLE);
-				telaAlvo = "subcategoria";
-			}
 
+				if (categoriaAux.equals("subcategoria1")) {
+					subcategorias.setAdapter(new AdaptadorMenu(Principal.this, imagens.toArray(new Integer[imagens.size()])));
+					layoutCategorias.setVisibility(View.GONE);
+					layoutSubcategorias.setVisibility(View.VISIBLE);
+				} else {
+					miniaturas.setAdapter(new AdaptadorMiniaturas(Principal.this, imagensGridView));
+					layoutSubcategorias.setVisibility(View.GONE);
+					layoutMiniaturas.setVisibility(View.VISIBLE);
+				}
+				telaAlvo = "miniaturas";
+			}
 		});
 		subcategorias.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 
-				miniaturas.setAdapter(new AdaptadorMenu(Principal.this, imagensGridView));
+				miniaturas.setAdapter(new AdaptadorMiniaturas(Principal.this, imagensGridView));
 				layoutPrincipal.setVisibility(View.GONE);
 				layoutCategorias.setVisibility(View.GONE);
 				layoutSubcategorias.setVisibility(View.GONE);
 				layoutMiniaturas.setVisibility(View.VISIBLE);
-				telaAlvo = "miniaturas";
+				telaAlvo = "subcategoria1";
 			}
 
 		});
@@ -168,57 +277,159 @@ public class Principal extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(Principal.this, "Compartilhando a imagem: " + posicaoPW, Toast.LENGTH_SHORT).show();
-				System.out.println("AQUI >>>>>>>>>>>>>>> " + posicaoPW);
+				final Intent intent = new Intent(Intent.ACTION_SEND);
+				intent.setType("text/plain");
+				intent.putExtra(Intent.EXTRA_TEXT, "url da imagem");
 
+				try {
+					startActivity(Intent.createChooser(intent, "Select an action"));
+				} catch (android.content.ActivityNotFoundException ex) {
+				}
+			}
+		});
+
+		btnSalvar.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				saveImageToExternalStorage(imagensGridView.get(posicaoPW));
 			}
 		});
 
 	}
 
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	private void carregarImagens(String categoria, GridView miniaturas) {
+		String[] urls = { "http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg",
+				"http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg",
+				"http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg",
+				"http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg",
+				"http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg" };
+		new CarregaImagem(urls, miniaturas).execute();
+	}
 
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			switch (telaAlvo) {
-			case "principal":
-				finish();
-				break;
-			case "categorias":
-				layoutPrincipal.setVisibility(View.VISIBLE);
-				layoutCategorias.setVisibility(View.GONE);
-				layoutSubcategorias.setVisibility(View.GONE);
-				layoutMiniaturas.setVisibility(View.GONE);
-				layoutViewPager.setVisibility(View.GONE);
-				telaAlvo = "principal";
-				break;
-			case "subcategoria":
-				layoutPrincipal.setVisibility(View.GONE);
-				layoutSubcategorias.setVisibility(View.GONE);
-				layoutCategorias.setVisibility(View.VISIBLE);
-				layoutMiniaturas.setVisibility(View.GONE);
-				layoutViewPager.setVisibility(View.GONE);
-				telaAlvo = "categorias";
-				break;
-			case "miniaturas":
-				layoutPrincipal.setVisibility(View.GONE);
-				layoutSubcategorias.setVisibility(View.GONE);
-				layoutCategorias.setVisibility(View.VISIBLE);
-				layoutMiniaturas.setVisibility(View.GONE);
-				layoutViewPager.setVisibility(View.GONE);
-				telaAlvo = "categorias";
-				break;
-			case "viewpager":
-				layoutPrincipal.setVisibility(View.GONE);
-				layoutSubcategorias.setVisibility(View.GONE);
-				layoutCategorias.setVisibility(View.GONE);
-				layoutMiniaturas.setVisibility(View.VISIBLE);
-				layoutViewPager.setVisibility(View.GONE);
-				telaAlvo = "miniaturas";
-				break;
-			}
-			return true;
+	class CarregaImagem extends AsyncTask<String, String, String> {
+		String[] urls;
+		GridView miniaturas;
+
+		public CarregaImagem(String[] urls, GridView miniaturas1) {
+			this.urls = urls;
+			this.miniaturas = miniaturas1;
 		}
-		return super.onKeyDown(keyCode, event);
+
+		public void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			imagensGridView.clear();
+			try {
+				for (int i = 0; i < urls.length; i++) {
+					URL aURL = new URL(urls[i]);
+					HttpURLConnection conn = (HttpURLConnection) aURL.openConnection();
+					InputStream is = conn.getInputStream();
+					Bitmap d = BitmapFactory.decodeStream(is);
+					imagensGridView.add(d);
+					is.close();
+				}
+				// return d;
+				Toast.makeText(Principal.this, "foi", Toast.LENGTH_SHORT).show();
+				return null;
+			} catch (Exception e) {
+				System.out.println("Exc=" + e);
+				return null;
+			}
+
+		}
+
+		public void onPostExecute(String a) {
+			miniaturas.setAdapter(new AdaptadorMiniaturas(Principal.this, imagensGridView));
+		}
+
+	}
+
+	public boolean saveImageToExternalStorage(Bitmap image) {
+		String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + APP_PATH_SD_CARD + APP_THUMBNAIL_PATH_SD_CARD;
+
+		try {
+			File dir = new File(fullPath);
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+
+			OutputStream fOut = null;
+			File file = new File(fullPath, "desiredFilename.png");
+			file.createNewFile();
+			fOut = new FileOutputStream(file);
+
+			// 100 means no compression, the lower you go, the stronger the
+			// compression
+			image.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+			fOut.flush();
+			fOut.close();
+
+			MediaStore.Images.Media.insertImage(Principal.this.getContentResolver(), file.getAbsolutePath(), file.getName(), file.getName());
+
+			return true;
+
+		} catch (Exception e) {
+			// Log.e("saveToExternalStorage()", e.getMessage());
+			return false;
+		}
+
+	}
+
+	public void onBackPressed() {
+		switch (telaAlvo) {
+		case "principal":
+			new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Sair?").setMessage("Você deseja realmente sair do aplicativo?")
+					.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							Principal.this.finish();
+						}
+					}).setNegativeButton("Não", null).show();
+			break;
+		case "categorias":
+			layoutPrincipal.setVisibility(View.VISIBLE);
+			layoutCategorias.setVisibility(View.GONE);
+			layoutSubcategorias.setVisibility(View.GONE);
+			layoutMiniaturas.setVisibility(View.GONE);
+			layoutViewPager.setVisibility(View.GONE);
+			telaAlvo = "principal";
+			break;
+		case "subcategoria":
+			layoutPrincipal.setVisibility(View.GONE);
+			layoutSubcategorias.setVisibility(View.GONE);
+			layoutCategorias.setVisibility(View.VISIBLE);
+			layoutMiniaturas.setVisibility(View.GONE);
+			layoutViewPager.setVisibility(View.GONE);
+			telaAlvo = "categorias";
+			break;
+		case "subcategoria1":
+			layoutPrincipal.setVisibility(View.GONE);
+			layoutSubcategorias.setVisibility(View.VISIBLE);
+			layoutCategorias.setVisibility(View.GONE);
+			layoutMiniaturas.setVisibility(View.GONE);
+			layoutViewPager.setVisibility(View.GONE);
+			telaAlvo = "subcategoria";
+			break;
+		case "miniaturas":
+			layoutPrincipal.setVisibility(View.GONE);
+			layoutSubcategorias.setVisibility(View.GONE);
+			layoutCategorias.setVisibility(View.VISIBLE);
+			layoutMiniaturas.setVisibility(View.GONE);
+			layoutViewPager.setVisibility(View.GONE);
+			telaAlvo = "categorias";
+			break;
+		case "viewpager":
+			layoutPrincipal.setVisibility(View.GONE);
+			layoutSubcategorias.setVisibility(View.GONE);
+			layoutCategorias.setVisibility(View.GONE);
+			layoutMiniaturas.setVisibility(View.VISIBLE);
+			layoutViewPager.setVisibility(View.GONE);
+			telaAlvo = "miniaturas";
+			break;
+		}
 	}
 
 	@Override
@@ -239,98 +450,4 @@ public class Principal extends Activity {
 		super.onDestroy();
 	}
 
-	class AdaptadorMenu extends BaseAdapter {
-		private Context ctx;
-		private Integer[] img;
-
-		public AdaptadorMenu(Context c, Integer[] imagens) {
-			this.ctx = c;
-			this.img = imagens;
-		}
-
-		@Override
-		public int getCount() {
-			// TODO Auto-generated method stub
-			return img.length;
-		}
-
-		@Override
-		public Object getItem(int position) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public long getItemId(int position) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public View getView(int posicao, View convertView, ViewGroup parent) {
-			ImageView imagem;
-
-			if (convertView == null) {
-				imagem = new ImageView(ctx);
-				// imagem.setLayoutParams(new GridView.LayoutParams(120,120));
-				imagem.setAdjustViewBounds(true);
-				imagem.setScaleType(ImageView.ScaleType.CENTER_CROP);
-				imagem.setPadding(2, 2, 2, 2);
-			} else {
-				imagem = (ImageView) convertView;
-			}
-			imagem.setImageResource(img[posicao]);
-			return imagem;
-		}
-
-	}
-
-	public class AdaptadorImagem_ViewPager extends PagerAdapter {
-		private Context ctx;
-		private final Integer[] imagens;
-
-		public AdaptadorImagem_ViewPager(Context c, Integer[] imagens) {
-			this.ctx = c;
-			this.imagens = imagens;
-		}
-
-		@Override
-		public int getCount() {
-			return imagens.length;
-		}
-
-		@Override
-		public boolean isViewFromObject(View view, Object object) {
-			// Determina se a view informada é igual ao object retornado pelo
-			// instantiateItem
-			return view == ((MeuObjeto) object).view;
-		}
-
-		@Override
-		public Object instantiateItem(ViewGroup container, int position) {
-			ImageView img = new ImageView(ctx);
-			img.setImageResource(imagens[position]);
-			img.setAdjustViewBounds(true);
-
-			// Adiciona no layout ViewGroup
-			((ViewGroup) container).addView(img);
-
-			MeuObjeto obj = new MeuObjeto();
-			obj.view = img;
-			return obj;
-		}
-
-		@Override
-		public void destroyItem(ViewGroup container, int position, Object obj) {
-			// Remove do layout
-			MeuObjeto meuObj = (MeuObjeto) obj;
-			((ViewPager) container).removeView(meuObj.view);
-		}
-
-		// Apenas para demosntrar que você pode retornar um Objeto qualquer que
-		// contém a view
-		class MeuObjeto {
-			View view;
-		}
-	}
 }

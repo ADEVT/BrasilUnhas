@@ -27,6 +27,14 @@
         android:orientation="vertical"
         android:visibility="visible" >
 
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="match_parent"
+            android:layout_height="111dp"
+            android:src="@drawable/logo" 
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"/>
+
         <GridView
             android:id="@+id/gvPrincipal"
             android:layout_width="fill_parent"
@@ -34,10 +42,10 @@
             android:background="#FFFFFF"
             android:columnWidth="90dp"
             android:gravity="center"
-            android:horizontalSpacing="20dp"
+            android:horizontalSpacing="0dp"
             android:numColumns="2"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="20dp" >
+            android:verticalSpacing="0dp" >
         </GridView>
     </LinearLayout>
     <!-- fim do layout do menu principal -->
@@ -88,10 +96,10 @@
             android:background="#FFFFFF"
             android:columnWidth="90dp"
             android:gravity="center"
-            android:horizontalSpacing="20dp"
+            android:horizontalSpacing="0dp"
             android:numColumns="2"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="20dp" >
+            android:verticalSpacing="0dp" >
         </GridView>
     </LinearLayout>
     <!-- fim do layout do menu subcategorias -->
@@ -115,10 +123,10 @@
             android:background="#FFFFFF"
             android:columnWidth="90dp"
             android:gravity="center"
-            android:horizontalSpacing="20dp"
-            android:numColumns="2"
+            android:horizontalSpacing="0dp"
+            android:numColumns="3"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="20dp" >
+            android:verticalSpacing="0dp" >
         </GridView>
     </LinearLayout>
 
