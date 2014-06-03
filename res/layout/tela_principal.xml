@@ -31,9 +31,9 @@
             android:id="@+id/imageView1"
             android:layout_width="match_parent"
             android:layout_height="111dp"
-            android:src="@drawable/logo" 
+            android:layout_marginBottom="20dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"/>
+            android:src="@drawable/logo" />
 
         <GridView
             android:id="@+id/gvPrincipal"
@@ -121,12 +121,12 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="#FFFFFF"
-            android:columnWidth="90dp"
             android:gravity="center"
-            android:horizontalSpacing="0dp"
+            android:horizontalSpacing="4dp"
             android:numColumns="3"
+            android:padding="4dip"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="0dp" >
+            android:verticalSpacing="4dp" >
         </GridView>
     </LinearLayout>
 
@@ -189,5 +189,74 @@
     </RelativeLayout>
 
     <!-- fim do layout com viewpager para exibição das imagens -->
+
+
+    <!-- inicio do layout do sobre -->
+
+    <RelativeLayout
+        android:id="@+id/layout_sobre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/banner"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Desenvolvido por:" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView1"
+            android:layout_centerHorizontal="true"
+            android:text="ADEVT Developers"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView1"
+            android:layout_below="@+id/textView2"
+            android:layout_marginTop="25dp"
+            android:text="Email de suporte:" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView3"
+            android:layout_centerHorizontal="true"
+            android:text="adevt@gmail.com"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Button
+            android:id="@+id/btnAvaliarApp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView4"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="31dp"
+            android:text="Avalie o aplicativo" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnAvaliarApp"
+            android:layout_centerHorizontal="true"
+            android:text="Se gostou dê 5 estrelas e divulgue o app! :)" />
+    </RelativeLayout>
+
+    <!-- fim do layout do sobre -->
 
 </RelativeLayout>
