@@ -2,17 +2,13 @@ package br.adevt.brasilunhas;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -22,10 +18,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -37,15 +31,20 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-public class Principal extends Activity {
+public class Principal extends AbsListViewBaseActivity {
 	private AdView adView;
 	private final String AD_UNIT_ID = "ca-app-pub-4698331571681120/9045635697";
 	public final static String APP_PATH_SD_CARD = "/BrasilUnhas/";
@@ -58,6 +57,16 @@ public class Principal extends Activity {
 	RelativeLayout layoutViewPager;
 	Button btnCompartilhar, btnSalvar;
 
+	String[] imageUrls = { "http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg",
+			"http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg",
+			"http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg",
+			"http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg",
+			"http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg",
+			"http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg",
+			"http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg",
+			"http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg" };
+	DisplayImageOptions options;
+
 	int posicaoPW = 0;
 
 	ArrayList<Bitmap> imagensGridView = new ArrayList<>();
@@ -65,6 +74,7 @@ public class Principal extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		BaseActivity.imageLoader.init(ImageLoaderConfiguration.createDefault(getBaseContext()));
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		setContentView(R.layout.tela_principal);
@@ -81,6 +91,9 @@ public class Principal extends Activity {
 
 		adView.loadAd(adRequest);
 
+		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ic_stub).showImageForEmptyUri(R.drawable.ic_empty).showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
+				.cacheOnDisk(true).considerExifParams(true).bitmapConfig(Bitmap.Config.RGB_565).build();
+
 		btnCompartilhar = (Button) findViewById(R.id.btnCompartilhar);
 		btnSalvar = (Button) findViewById(R.id.btnSalvar);
 
@@ -93,7 +106,7 @@ public class Principal extends Activity {
 		final GridView menuPrincipal = (GridView) findViewById(R.id.gvPrincipal);
 		final GridView categorias = (GridView) findViewById(R.id.gvCategorias);
 		final GridView subcategorias = (GridView) findViewById(R.id.gvSubcategorias);
-		final GridView miniaturas = (GridView) findViewById(R.id.gvMiniaturas);
+		listView = (GridView) findViewById(R.id.gvMiniaturas);
 		final ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
 
 		Integer[] imagens = { R.drawable.categorias, R.drawable.facebookcompartilhar, R.drawable.sobre, R.drawable.app };
@@ -208,7 +221,7 @@ public class Principal extends Activity {
 				}
 				// Toast.makeText(Principal.this, categoriaSelecionada,
 				// Toast.LENGTH_SHORT).show();
-				carregarImagens(categoriaSelecionada, miniaturas);
+				// carregarImagens(categoriaSelecionada, miniaturas);
 				layoutPrincipal.setVisibility(View.GONE);
 				layoutCategorias.setVisibility(View.GONE);
 
@@ -217,7 +230,7 @@ public class Principal extends Activity {
 					layoutCategorias.setVisibility(View.GONE);
 					layoutSubcategorias.setVisibility(View.VISIBLE);
 				} else {
-					miniaturas.setAdapter(new AdaptadorMiniaturas(Principal.this, imagensGridView));
+					((GridView) listView).setAdapter(new ImageAdapter());
 					layoutSubcategorias.setVisibility(View.GONE);
 					layoutMiniaturas.setVisibility(View.VISIBLE);
 				}
@@ -229,7 +242,7 @@ public class Principal extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 
-				miniaturas.setAdapter(new AdaptadorMiniaturas(Principal.this, imagensGridView));
+				((GridView) listView).setAdapter(new ImageAdapter());
 				layoutPrincipal.setVisibility(View.GONE);
 				layoutCategorias.setVisibility(View.GONE);
 				layoutSubcategorias.setVisibility(View.GONE);
@@ -239,7 +252,7 @@ public class Principal extends Activity {
 
 		});
 
-		miniaturas.setOnItemClickListener(new OnItemClickListener() {
+		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int posicao, long arg3) {
@@ -299,11 +312,7 @@ public class Principal extends Activity {
 	}
 
 	private void carregarImagens(String categoria, GridView miniaturas) {
-		String[] urls = { "http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg",
-				"http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg",
-				"http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg",
-				"http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg",
-				"http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg" };
+		String[] urls = { "http://2.bp.blogspot.com/-ZBdmSCOFkus/ULrJPo69BII/AAAAAAAAEiE/kMmzSjEkmfw/s1600/unhas-acucar-1.jpg", };
 		new CarregaImagem(urls, miniaturas).execute();
 	}
 
@@ -448,6 +457,70 @@ public class Principal extends Activity {
 	public void onDestroy() {
 		adView.destroy();
 		super.onDestroy();
+	}
+
+	public class ImageAdapter extends BaseAdapter {
+		@Override
+		public int getCount() {
+			return imageUrls.length;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			final ViewHolder holder;
+			View view = convertView;
+			if (view == null) {
+				view = getLayoutInflater().inflate(R.layout.item_grid_image, parent, false);
+				assert view != null;
+				holder = new ViewHolder();
+				holder.imageView = (ImageView) view.findViewById(R.id.image);
+				holder.imageView.setPadding(2, 2, 2, 2);
+				holder.progressBar = (ProgressBar) view.findViewById(R.id.progress);
+				view.setTag(holder);
+			} else {
+				holder = (ViewHolder) view.getTag();
+			}
+
+			imageLoader.displayImage(imageUrls[position], holder.imageView, options, new SimpleImageLoadingListener() {
+				@Override
+				public void onLoadingStarted(String imageUri, View view) {
+					holder.progressBar.setProgress(0);
+					holder.progressBar.setVisibility(View.VISIBLE);
+				}
+
+				@Override
+				public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+					holder.progressBar.setVisibility(View.GONE);
+				}
+
+				@Override
+				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+					holder.progressBar.setVisibility(View.GONE);
+				}
+			}, new ImageLoadingProgressListener() {
+				@Override
+				public void onProgressUpdate(String imageUri, View view, int current, int total) {
+					holder.progressBar.setProgress(Math.round(100.0f * current / total));
+				}
+			});
+
+			return view;
+		}
+	}
+
+	static class ViewHolder {
+		ImageView imageView;
+		ProgressBar progressBar;
 	}
 
 }
