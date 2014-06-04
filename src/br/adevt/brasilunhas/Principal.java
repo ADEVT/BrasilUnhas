@@ -3,8 +3,6 @@ package br.adevt.brasilunhas;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -261,7 +259,7 @@ public class Principal extends AbsListViewBaseActivity {
 
 				switch (posicao) {
 				case 0:
-					Integer[] imagens2 = { R.drawable.cores, R.drawable.passoapasso, R.drawable.glitter, R.drawable.francesinha, R.drawable.casamento, R.drawable.animais, R.drawable.desenhos,
+					Integer[] imagens2 = { R.drawable.categoria_cores, R.drawable.passoapasso, R.drawable.glitter, R.drawable.francesinha, R.drawable.casamento, R.drawable.animais, R.drawable.desenhos,
 							R.drawable.jogos, R.drawable.tresd, R.drawable.paises, R.drawable.times, R.drawable.balada, R.drawable.copadomundo, R.drawable.anonovo, R.drawable.carnaval,
 							R.drawable.natal, R.drawable.decoradas, R.drawable.filhaunica, R.drawable.flores, R.drawable.coracoes, R.drawable.nomes };
 					categorias.setAdapter(new AdaptadorMenu(Principal.this, imagens2));
@@ -272,7 +270,15 @@ public class Principal extends AbsListViewBaseActivity {
 					telaAlvo = "categorias";
 					break;
 				case 1:
-					
+					final Intent intent1 = new Intent(Intent.ACTION_SEND);
+					intent1.setType("text/plain");
+					intent1.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=br.adevt.brasilunhas");
+
+					try {
+						startActivity(Intent.createChooser(intent1, "Selecione onde compartilhar:"));
+					} catch (android.content.ActivityNotFoundException ex) {
+					}
+
 					break;
 				case 2:
 					layoutPrincipal.setVisibility(View.GONE);
@@ -289,23 +295,18 @@ public class Principal extends AbsListViewBaseActivity {
 				}
 			}
 		});
-
+		
 		categorias.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int posicao, long arg3) {
-				ArrayList<Integer> imagens = new ArrayList<>();
+				Integer[] imagens = {R.drawable.sub_categoria_amarela, R.drawable.sub_categoria_azul, R.drawable.sub_categoria_branca, R.drawable.sub_categoria_cinza, R.drawable.sub_categoria_laranja, R.drawable.sub_categoria_marrom, R.drawable.sub_categoria_preta, R.drawable.sub_categoria_rosa, R.drawable.sub_categoria_roxa, R.drawable.sub_categoria_verde, R.drawable.sub_categoria_vermelha};
 				String categoriaAux = "miniaturas";
 				String categoriaSelecionada = "";
 
 				switch (posicao) {
 				case 0:
-					imagens.add(R.drawable.azul);
-					imagens.add(R.drawable.verde);
-					imagens.add(R.drawable.vermelho);
-					imagens.add(R.drawable.roxo);
 					categoriaAux = "subcategoria1";
-
 					break;
 				case 1:
 					categoriaSelecionada = "passoapasso";
@@ -376,7 +377,7 @@ public class Principal extends AbsListViewBaseActivity {
 				layoutSobre.setVisibility(View.GONE);
 
 				if (categoriaAux.equals("subcategoria1")) {
-					subcategorias.setAdapter(new AdaptadorMenu(Principal.this, imagens.toArray(new Integer[imagens.size()])));
+					subcategorias.setAdapter(new AdaptadorMenu(Principal.this, imagens));
 					layoutCategorias.setVisibility(View.GONE);
 					layoutSubcategorias.setVisibility(View.VISIBLE);
 				} else {
@@ -447,7 +448,7 @@ public class Principal extends AbsListViewBaseActivity {
 				intent.putExtra(Intent.EXTRA_TEXT, imageUrls[posicaoPW]);
 
 				try {
-					startActivity(Intent.createChooser(intent, "Select an action"));
+					startActivity(Intent.createChooser(intent, "Selecione onde compartilhar:"));
 				} catch (android.content.ActivityNotFoundException ex) {
 				}
 			}
