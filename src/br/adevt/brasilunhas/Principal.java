@@ -256,12 +256,12 @@ public class Principal extends AbsListViewBaseActivity {
 
 		menuPrincipal.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int posicao, long id) {
-
 				switch (posicao) {
 				case 0:
-					Integer[] imagens2 = { R.drawable.categoria_cores, R.drawable.passoapasso, R.drawable.glitter, R.drawable.francesinha, R.drawable.casamento, R.drawable.animais, R.drawable.desenhos,
-							R.drawable.jogos, R.drawable.tresd, R.drawable.paises, R.drawable.times, R.drawable.balada, R.drawable.copadomundo, R.drawable.anonovo, R.drawable.carnaval,
-							R.drawable.natal, R.drawable.decoradas, R.drawable.filhaunica, R.drawable.flores, R.drawable.coracoes, R.drawable.nomes };
+					Integer[] imagens2 = { R.drawable.categoria_cores, R.drawable.categoria_passoapasso, R.drawable.categoria_glitter, R.drawable.categoria_francesinha,
+							R.drawable.categoria_casamento, R.drawable.categoria_animais, R.drawable.categoria_desenhos, R.drawable.categoria_jogos, R.drawable.tresd, R.drawable.paises,
+							R.drawable.times, R.drawable.balada, R.drawable.copadomundo, R.drawable.anonovo, R.drawable.carnaval, R.drawable.natal, R.drawable.decoradas, R.drawable.filhaunica,
+							R.drawable.flores, R.drawable.coracoes, R.drawable.nomes };
 					categorias.setAdapter(new AdaptadorMenu(Principal.this, imagens2));
 					layoutPrincipal.setVisibility(View.GONE);
 					layoutCategorias.setVisibility(View.VISIBLE);
@@ -295,12 +295,14 @@ public class Principal extends AbsListViewBaseActivity {
 				}
 			}
 		});
-		
+
 		categorias.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int posicao, long arg3) {
-				Integer[] imagens = {R.drawable.sub_categoria_amarela, R.drawable.sub_categoria_azul, R.drawable.sub_categoria_branca, R.drawable.sub_categoria_cinza, R.drawable.sub_categoria_laranja, R.drawable.sub_categoria_marrom, R.drawable.sub_categoria_preta, R.drawable.sub_categoria_rosa, R.drawable.sub_categoria_roxa, R.drawable.sub_categoria_verde, R.drawable.sub_categoria_vermelha};
+				Integer[] imagens = { R.drawable.sub_categoria_amarela, R.drawable.sub_categoria_azul, R.drawable.sub_categoria_branca, R.drawable.sub_categoria_cinza,
+						R.drawable.sub_categoria_laranja, R.drawable.sub_categoria_marrom, R.drawable.sub_categoria_preta, R.drawable.sub_categoria_rosa, R.drawable.sub_categoria_roxa,
+						R.drawable.sub_categoria_verde, R.drawable.sub_categoria_vermelha };
 				String categoriaAux = "miniaturas";
 				String categoriaSelecionada = "";
 
